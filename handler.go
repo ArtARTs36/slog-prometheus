@@ -15,7 +15,7 @@ type Option struct {
 	Level slog.Leveler
 
 	// If not provided, the collectors with namespace 'slog' is used by default.
-	Collector *Collector
+	Collectors *Collectors
 }
 
 func (o Option) NewHandler() slog.Handler {
@@ -23,8 +23,8 @@ func (o Option) NewHandler() slog.Handler {
 		o.Level = slog.LevelDebug
 	}
 
-	if o.Collector == nil {
-		o.Collector = defaultCollector
+	if o.Collectors == nil {
+		o.Collectors = defaultCollectors
 	}
 
 	return &Handler{
@@ -37,7 +37,7 @@ func (h *Handler) Enabled(_ context.Context, level slog.Level) bool {
 }
 
 func (h *Handler) Handle(_ context.Context, rec slog.Record) error {
-	h.option.Collector.IncLogCount(rec.Level)
+	h.option.Collectors.IncLogCount(rec.Level)
 	return nil
 }
 
