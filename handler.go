@@ -18,7 +18,7 @@ type Option struct {
 	Collector *Collector
 }
 
-func (o Option) NewHandler() slog.Handler {
+func (o Option) NewHandler() *Handler {
 	if o.Level == nil {
 		o.Level = slog.LevelDebug
 	}
