@@ -18,7 +18,7 @@ type Option struct {
 	Collector *Collector
 }
 
-func (o Option) NewHandler() *Handler {
+func (o Option) NewHandler() slog.Handler {
 	if o.Level == nil {
 		o.Level = slog.LevelDebug
 	}
@@ -36,8 +36,8 @@ func (h *Handler) Enabled(_ context.Context, level slog.Level) bool {
 	return level >= h.option.Level.Level()
 }
 
-func (h *Handler) Handle(ctx context.Context, rec slog.Record) error {
-	h.HandleSilent(ctx, rec)
+func (h *Handler) Handle(_ context.Context, rec slog.Record) error {
+	h.option.Collector.IncLogCount(rec.Level)
 	return nil
 }
 
@@ -47,8 +47,4 @@ func (h *Handler) WithAttrs(_ []slog.Attr) slog.Handler {
 
 func (h *Handler) WithGroup(_ string) slog.Handler {
 	return h
-}
-
-func (h *Handler) HandleSilent(_ context.Context, rec slog.Record) {
-	h.option.Collector.IncLogCount(rec.Level)
 }
