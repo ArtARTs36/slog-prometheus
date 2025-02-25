@@ -7,10 +7,10 @@ import (
 )
 
 var logLevelMap = map[slog.Leveler]string{
-	slog.LevelDebug: "debug",
-	slog.LevelInfo:  "info",
-	slog.LevelWarn:  "warn",
-	slog.LevelError: "error",
+	slog.LevelDebug: slog.LevelDebug.String(),
+	slog.LevelInfo:  slog.LevelInfo.String(),
+	slog.LevelWarn:  slog.LevelWarn.String(),
+	slog.LevelError: slog.LevelError.String(),
 }
 
 func prepareLogLevel(lvl slog.Leveler) string {
@@ -19,7 +19,7 @@ func prepareLogLevel(lvl slog.Leveler) string {
 		return name
 	}
 
-	return strings.ToLower(lvl.Level().String())
+	return strings.ToUpper(lvl.Level().String())
 }
 
 func calcCurrentLogLevel() slog.Leveler {

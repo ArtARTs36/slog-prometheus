@@ -41,11 +41,11 @@ func main() {
 ```text
 # HELP slog_logger_info Logger info
 # TYPE slog_logger_info gauge
-slog_logger_info{level="debug"} 1
+slog_logger_info{level="DEBUG"} 1
 # HELP slog_logs_count Slog: logs logCount per level
 # TYPE slog_logs_count counter
-slog_logs_count{level="debug"} 1
-slog_logs_count{level="error"} 1
-slog_logs_count{level="info"} 1
-slog_logs_count{level="warn"} 1
+slog_logs_count{level="DEBUG"} 1
+slog_logs_count{level="ERROR"} 1
+slog_logs_count{level="INFO"} 1
+slog_logs_count{level="WARN"} 1
 ```
