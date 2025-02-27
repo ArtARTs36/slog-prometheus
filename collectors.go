@@ -10,12 +10,12 @@ type Collectors struct {
 	loggerInfo *loggerInfoCollector
 }
 
-func NewCollector(namespace string) *Collectors {
+func NewCollectors(namespace string) *Collectors {
 	return &Collectors{
 		logCount: prometheus.NewCounterVec(prometheus.CounterOpts{
 			Name:      "logs_count",
 			Namespace: namespace,
-			Help:      "Slog: logs logCount per level",
+			Help:      "Logs: count of logs per level",
 		}, []string{"level"}),
 		loggerInfo: newLoggerInfoCollector(namespace),
 	}

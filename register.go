@@ -6,7 +6,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 )
 
-var defaultCollectors = NewCollector("slog")
+var defaultCollectors = NewCollectors("slog")
 
 func RegisterDefault() error {
 	return register(defaultCollectors, prometheus.DefaultRegisterer)
@@ -16,7 +16,7 @@ func Register(
 	namespace string,
 	registerer prometheus.Registerer,
 ) error {
-	collectors := NewCollector(namespace)
+	collectors := NewCollectors(namespace)
 
 	return register(collectors, registerer)
 }
