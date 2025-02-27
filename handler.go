@@ -32,6 +32,12 @@ func (o Option) NewHandler() slog.Handler {
 	}
 }
 
+func (o Option) WithNamespace(namespace string) Option {
+	o.Collectors = NewCollectors(namespace)
+
+	return o
+}
+
 func (o Option) WrapHandler(baseHandler slog.Handler) slog.Handler {
 	return newWrappedHandler(baseHandler, o.NewHandler())
 }

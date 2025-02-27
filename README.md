@@ -54,7 +54,9 @@ import (
 func main() {
 	logger := slog.New(slogprometheus.Option{
 		Level: slog.LevelDebug,
-	}.WrapHandler(slog.NewJSONHandler(os.Stdout, nil)))
+	}.WrapHandler(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
+		Level: slog.LevelDebug,
+	})))
 
 	logger.Debug("debug log msg")
 	logger.Info("info log msg")
