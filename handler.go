@@ -32,6 +32,10 @@ func (o Option) NewHandler() slog.Handler {
 	}
 }
 
+func (o Option) WrapHandler(baseHandler slog.Handler) slog.Handler {
+	return newWrappedHandler(baseHandler, o.NewHandler())
+}
+
 func (h *Handler) Enabled(_ context.Context, level slog.Level) bool {
 	return level >= h.option.Level.Level()
 }

@@ -36,13 +36,44 @@ func main() {
 }
 ```
 
+---
+
+Usage with JSON Handler
+
+```go
+package main
+
+import (
+	slogprometheus "github.com/artarts36/slog-prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"log/slog"
+	"net/http"
+	"os"
+)
+
+func main() {
+	logger := slog.New(slogprometheus.Option{
+		Level: slog.LevelDebug,
+	}.WrapHandler(slog.NewJSONHandler(os.Stdout, nil)))
+
+	logger.Debug("debug log msg")
+	logger.Info("info log msg")
+	logger.Warn("warn log msg")
+	logger.Error("error log msg")
+
+	slogprometheus.RegisterDefault()
+
+	http.ListenAndServe("localhost:8080", promhttp.Handler())
+}
+```
+
 ## Exposing metrics
 
 ```text
 # HELP slog_logger_info Logger info
 # TYPE slog_logger_info gauge
 slog_logger_info{level="DEBUG"} 1
-# HELP slog_logs_count Slog: logs logCount per level
+# HELP slog_logs_count Logs: count of logs per level
 # TYPE slog_logs_count counter
 slog_logs_count{level="DEBUG"} 1
 slog_logs_count{level="ERROR"} 1
