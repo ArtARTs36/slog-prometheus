@@ -1,6 +1,7 @@
 package slogprometheus
 
 import (
+	"fmt"
 	"github.com/prometheus/client_golang/prometheus"
 	"log/slog"
 )
@@ -30,4 +31,14 @@ func (c *Collectors) Map() map[string]prometheus.Collector {
 		"logs_count":  c.logCount,
 		"logger_info": c.loggerInfo,
 	}
+}
+
+func (c *Collectors) Register(registerer prometheus.Registerer) error {
+	for name, collector := range c.Map() {
+		if err := registerer.Register(collector); err != nil {
+			return fmt.Errorf("failed to register collector %q: %w", name, err)
+		}
+	}
+
+	return nil
 }
