@@ -6,6 +6,14 @@ import (
 	"strings"
 )
 
+type CurrentHandlerResolver func() slog.Handler
+
+var (
+	DefaultCurrentHandlerResolver CurrentHandlerResolver = func() slog.Handler {
+		return slog.Default().Handler()
+	}
+)
+
 var logLevelMap = map[slog.Leveler]string{
 	slog.LevelDebug: slog.LevelDebug.String(),
 	slog.LevelInfo:  slog.LevelInfo.String(),
@@ -23,7 +31,7 @@ func prepareLogLevel(lvl slog.Leveler) string {
 }
 
 func calcCurrentLogLevel() slog.Leveler {
-	return calcLogLevel(slog.Default().Handler())
+	return calcLogLevel(DefaultCurrentHandlerResolver())
 }
 
 func calcLogLevel(handler slog.Handler) slog.Leveler {
