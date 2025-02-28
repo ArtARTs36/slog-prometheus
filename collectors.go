@@ -1,9 +1,9 @@
 package slogprometheus
 
 import (
-	"fmt"
-	"github.com/prometheus/client_golang/prometheus"
 	"log/slog"
+
+	"github.com/prometheus/client_golang/prometheus"
 )
 
 type Collectors struct {
@@ -11,14 +11,13 @@ type Collectors struct {
 	loggerInfo *loggerInfoCollector
 }
 
-func NewCollectors(namespace string) *Collectors {
+func NewCollectors() *Collectors {
 	return &Collectors{
 		logCount: prometheus.NewCounterVec(prometheus.CounterOpts{
-			Name:      "logs_count",
-			Namespace: namespace,
-			Help:      "Logs: count of logs per level",
+			Name: "slog_logs_count",
+			Help: "Logs: count of logs per level",
 		}, []string{"level"}),
-		loggerInfo: newLoggerInfoCollector(namespace),
+		loggerInfo: newLoggerInfoCollector(),
 	}
 }
 
@@ -26,19 +25,12 @@ func (c *Collectors) IncLogCount(lvl slog.Level) {
 	c.logCount.WithLabelValues(prepareLogLevel(lvl)).Inc()
 }
 
-func (c *Collectors) Map() map[string]prometheus.Collector {
-	return map[string]prometheus.Collector{
-		"logs_count":  c.logCount,
-		"logger_info": c.loggerInfo,
-	}
+func (c *Collectors) Describe(desc chan<- *prometheus.Desc) {
+	c.logCount.Describe(desc)
+	c.loggerInfo.Describe(desc)
 }
 
-func (c *Collectors) Register(registerer prometheus.Registerer) error {
-	for name, collector := range c.Map() {
-		if err := registerer.Register(collector); err != nil {
-			return fmt.Errorf("failed to register collector %q: %w", name, err)
-		}
-	}
-
-	return nil
+func (c *Collectors) Collect(metric chan<- prometheus.Metric) {
+	c.logCount.Collect(metric)
+	c.loggerInfo.Collect(metric)
 }

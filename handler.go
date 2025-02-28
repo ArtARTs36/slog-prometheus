@@ -14,7 +14,7 @@ type Option struct {
 	// Logs at this level and above will be processed. The default level is debug.
 	Level slog.Leveler
 
-	// If not provided, the collectors with namespace 'slog' is used by default.
+	// If not provided, the collectors  is used by default.
 	Collectors *Collectors
 }
 
@@ -24,18 +24,12 @@ func (o Option) NewHandler() slog.Handler {
 	}
 
 	if o.Collectors == nil {
-		o.Collectors = defaultCollectors
+		o.Collectors = DefaultCollectors
 	}
 
 	return &Handler{
 		option: o,
 	}
-}
-
-func (o Option) WithNamespace(namespace string) Option {
-	o.Collectors = NewCollectors(namespace)
-
-	return o
 }
 
 func (o Option) WrapHandler(baseHandler slog.Handler) slog.Handler {

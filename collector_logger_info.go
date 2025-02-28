@@ -10,12 +10,11 @@ type loggerInfoCollector struct {
 	valuesReady bool
 }
 
-func newLoggerInfoCollector(namespace string) *loggerInfoCollector {
+func newLoggerInfoCollector() *loggerInfoCollector {
 	return &loggerInfoCollector{
 		collector: prometheus.NewGaugeVec(prometheus.GaugeOpts{
-			Name:      "logger_info",
-			Namespace: namespace,
-			Help:      "Logger info",
+			Name: "slog_logger_info",
+			Help: "Logger info",
 		}, []string{"level"}),
 	}
 }

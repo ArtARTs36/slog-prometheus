@@ -30,8 +30,6 @@ func main() {
 	logger.Warn("warn log msg")
 	logger.Error("error log msg")
 
-	slogprometheus.RegisterDefault()
-
 	http.ListenAndServe("localhost:8080", promhttp.Handler())
 }
 ```
@@ -62,8 +60,6 @@ func main() {
 	logger.Info("info log msg")
 	logger.Warn("warn log msg")
 	logger.Error("error log msg")
-
-	slogprometheus.RegisterDefault()
 
 	http.ListenAndServe("localhost:8080", promhttp.Handler())
 }
